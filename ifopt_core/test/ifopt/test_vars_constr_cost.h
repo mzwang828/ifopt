@@ -141,8 +141,8 @@ public:
     if (var_set == "var_set1") {
       Vector2d x = GetVariables()->GetComponent("var_set1")->GetValues();
 
-      jac_block.coeffRef(0, 0) = 2.0*x(0); // derivative of first constraint w.r.t x0
-      jac_block.coeffRef(0, 1) = 1.0;      // derivative of first constraint w.r.t x1
+      //jac_block.coeffRef(0, 0) = 2.0*x(0); // derivative of first constraint w.r.t x0
+      //jac_block.coeffRef(0, 1) = 1.0;      // derivative of first constraint w.r.t x1
     }
   }
 };

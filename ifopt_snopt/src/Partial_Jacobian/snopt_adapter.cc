@@ -94,46 +94,20 @@ SnoptAdapter::Init ()
   jAvar = nullptr;
   A = nullptr;
 
-  // //******************Manual Input for Not Provided Derivatives***************//
-  // // ONLY FOR NOT PROVIDED DERIVATIVES OF CONSTRAINTS
-  // int nrow = 39;  // number of rows of NPD
-  // int ndof = 4;
-  // int nstate = 4*40; // ndof * nstep
-  // int nnpG = nrow*nstate; // number of not provided derivatives: n_row * n_state(!n_variables)
-  // // row index for not provided derivatives. Be careful! count starts from 1
-  // int inpG[39];
-  // for (int i = 0; i < 39; i ++) {
-  //   inpG[i] = 156*2 + 1 + i;
-  // }
-  // // for (int i = 156; i < 39+156; i ++) {
-  // //   inpG[i] = 4*2*(40-1)+1+i-156;
-  // // }
-  // //******************Manual Input for Not Provided Derivatives***************//
-
   //******************Manual Input for Not Provided Derivatives***************//
   // ONLY FOR NOT PROVIDED DERIVATIVES OF CONSTRAINTS
-  int nrow = 19;  // number of rows of NPD
-  int ndof = 6; // ndof * nstep
-  int nnpG = nrow*ndof; // number of not provided derivatives: n_row * n_variables
+  int nrow = 39;  // number of rows of NPD
+  int nstate = 4*40; // ndof * nstep
+  int nnpG = nrow*n; // number of not provided derivatives: n_row * n_variables
   // row index for not provided derivatives. Be careful! count starts from 1
-  int inpG[19];
-  for (int i = 0; i < 19; i ++) {
-    inpG[i] = 19*ndof*2 + 1 + i;
+  int inpG[39];
+  for (int i = 0; i < 39; i ++) {
+    inpG[i] = 156*2 + 1 + i;
   }
-  //******************Manual Input for Not Provided Derivatives***************//
-
-  // //******************Manual Input for Not Provided Derivatives***************//
-  // // ONLY FOR NOT PROVIDED DERIVATIVES OF CONSTRAINTS
-  // int nrow = 39;  // number of rows of NPD
-  // int ndof = 9; // ndof * nstep
-  // int nstep = 40;
-  // int nnpG = nrow*ndof; // number of not provided derivatives: n_row * n_variables
-  // // row index for not provided derivatives. Be careful! count starts from 1
-  // int inpG[39];
-  // for (int i = 0; i < 39; i ++) {
-  //   inpG[i] = 39*9*2 + 1 + i;
+  // for (int i = 156; i < 39+156; i ++) {
+  //   inpG[i] = 4*2*(40-1)+1+i-156;
   // }
-  // //******************Manual Input for Not Provided Derivatives***************//
+  //******************Manual Input for Not Provided Derivatives***************//
 
   // derivatives of nonlinear part
   lenG  = obj_count*n + nlp_->GetJacobianOfConstraints().nonZeros() + nnpG;
@@ -166,9 +140,9 @@ SnoptAdapter::Init ()
   //********************Manual Fill for NPD***********************************//
   if (nnpG > 0) {
     for (int j = 0; j < nrow; j++) {
-      for (int k = 0; k < ndof; ++k) {
+      for (int k = 0; k < nstate; ++k) {
         iGfun[neG] = inpG[j] -1 + obj_count;
-        jGvar[neG] = j*ndof+k;
+        jGvar[neG] = k;
         neG++;
       }
     }

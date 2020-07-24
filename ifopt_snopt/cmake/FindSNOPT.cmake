@@ -18,8 +18,9 @@
 #=============================================================================
 
 
-set(SNOPT_DIR $ENV{SNOPT_DIR})
-set(snopt_v76 FALSE) # set true if snopt version >= v7.6
+set(SNOPT_DIR $ENV{SN_HOME})
+message(STATUS "sn_home" $ENV{SN_HOME})
+set(SNOPT_v76 TRUE) # set true if snopt version >= v7.6
 
 if(IS_DIRECTORY ${SNOPT_DIR}/include)
   set(SNOPT_INCLUDE_DIRS "${SNOPT_DIR}/include")
