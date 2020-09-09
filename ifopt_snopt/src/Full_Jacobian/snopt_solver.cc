@@ -40,20 +40,13 @@ SnoptSolver::Solve (Problem& ref)
   snopt.setProbName( "snopt" );
   snopt.setIntParameter( "Major Print level", 1 );
   snopt.setIntParameter( "Minor Print level", 1 );
-  snopt.setIntParameter( "Derivative option", 0 ); // 1 = snopt will not calculate missing derivatives
+  snopt.setIntParameter( "Derivative option", 1 ); // 1 = snopt will not calculate missing derivatives
   snopt.setIntParameter( "Verify level ", 3 ); // full check on gradients, will throw error
   snopt.setIntParameter("Iterations limit", 200000);
   snopt.setRealParameter( "Major feasibility tolerance",  1.0e-4); // target nonlinear constraint violation
   snopt.setRealParameter( "Minor feasibility tolerance",  1.0e-4); // for satisfying the QP bounds
   snopt.setRealParameter( "Major optimality tolerance",   1.0e-2); // target complementarity gap
-  
-  snopt.setRealParameter( "Derivative level", 0);
-  snopt.setRealParameter( "Function precision", 1.0e-8);
 
-  //Suggestions from Michael
-  // snopt.setRealParameter("LU factor tolerance", 1.99);
-  // snopt.setRealParameter("LU update tolerance", 1.99);
-  snopt.setIntParameter( "Scale option", 0);
 
   // error codes as given in the manual.
   int Cold = 0; // Basis = 1, Warm = 2;
@@ -67,8 +60,8 @@ SnoptSolver::Solve (Problem& ref)
 
   int INFO  = snopt.solve(Cold, snopt.neF, snopt.n, snopt.ObjAdd,
                      snopt.ObjRow, &SnoptAdapter::ObjectiveAndConstraintFct,
-                     //snopt.iAfun, snopt.jAvar, snopt.A, snopt.neA,
-                     //snopt.iGfun, snopt.jGvar, snopt.neG,
+                     snopt.iAfun, snopt.jAvar, snopt.A, snopt.neA,
+                     snopt.iGfun, snopt.jGvar, snopt.neG,
                      snopt.xlow, snopt.xupp, snopt.Flow, snopt.Fupp,
                      snopt.x, snopt.xstate, snopt.xmul,
                      snopt.F, snopt.Fstate, snopt.Fmul,

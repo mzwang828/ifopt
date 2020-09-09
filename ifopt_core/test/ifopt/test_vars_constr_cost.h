@@ -132,6 +132,7 @@ public:
   // In case this is too difficult to write, you can also tell the solvers to
   // approximate the derivatives by finite differences and not overwrite this
   // function, e.g. in ipopt.cc::use_jacobian_approximation_ = true
+  // Attention: see the parent class function for important information on sparsity pattern.
   void FillJacobianBlock (std::string var_set, Jacobian& jac_block) const override
   {
     // must fill only that submatrix of the overall Jacobian that relates
@@ -139,10 +140,24 @@ public:
     // classes are added, this submatrix will always start at row 0 and column 0,
     // thereby being independent from the overall problem.
     if (var_set == "var_set1") {
+      double alpha = 1e-8;
+      Vector2d x = GetVariables()->GetComponent("var_set1")->GetValues();
+      double g0 = std::pow(x(0),2) + x(1);
+      
+      double x0_plus = x(0) + alpha;
+      double g_plus = std::pow(x0_plus,2) + x(1);
+      jac_block.coeffRef(0, 0) = (g_plus - g0)/alpha;
+
+      double x1_plus = x(1) + alpha;
+      g_plus = std::pow(x(0),2) + x1_plus;
+      jac_block.coeffRef(0, 1) = (g_plus - g0)/alpha;
+
+      /*
       Vector2d x = GetVariables()->GetComponent("var_set1")->GetValues();
 
-      //jac_block.coeffRef(0, 0) = 2.0*x(0); // derivative of first constraint w.r.t x0
-      //jac_block.coeffRef(0, 1) = 1.0;      // derivative of first constraint w.r.t x1
+      jac_block.coeffRef(0, 0) = 2.0*x(0); // derivative of first constraint w.r.t x0
+      jac_block.coeffRef(0, 1) = 1.0;      // derivative of first constraint w.r.t x1*/
+      
     }
   }
 };
@@ -160,13 +175,26 @@ public:
   };
 
   void FillJacobianBlock (std::string var_set, Jacobian& jac) const override
-  {
+  {   
+    double alpha = 1e-8;
+    Vector2d x = GetVariables()->GetComponent("var_set1")->GetValues();
+    double g0 = -std::pow(x(1)-2,2);
+      
+    double x0_plus = x(0) + alpha;
+    double g_plus = -std::pow(x(1)-2,2);
+    jac.coeffRef(0, 0) = (g_plus - g0)/alpha;
+
+    double x1_plus = x(1) + alpha;
+    g_plus = -std::pow(x1_plus-2,2);
+    jac.coeffRef(0, 1) = (g_plus - g0)/alpha;
+    
+    /*
     if (var_set == "var_set1") {
       Vector2d x = GetVariables()->GetComponent("var_set1")->GetValues();
 
       jac.coeffRef(0, 0) = 0.0;             // derivative of cost w.r.t x0
       jac.coeffRef(0, 1) = -2.0*(x(1)-2.0); // derivative of cost w.r.t x1
-    }
+    }*/
   }
 };
 

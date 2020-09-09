@@ -50,6 +50,10 @@ SnoptSolver::Solve (Problem& ref)
   snopt.setRealParameter( "Derivative level", 0);
   snopt.setRealParameter( "Function precision", 1.0e-8);
 
+  //Suggestions from Michael
+  // snopt.setRealParameter("LU factor tolerance", 1.99);
+  // snopt.setRealParameter("LU update tolerance", 1.99);
+  snopt.setIntParameter( "Scale option", 0);
 
   // error codes as given in the manual.
   int Cold = 0; // Basis = 1, Warm = 2;

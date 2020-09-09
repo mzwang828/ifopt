@@ -65,7 +65,6 @@ void Component::Print (double tol, int& index) const
   VecBound bounds = GetBounds();
 
   std::vector<int> viol_idx;
-
   for (uint i=0; i<bounds.size(); ++i) {
     double lower = bounds.at(i).lower_;
     double upper = bounds.at(i).upper_;

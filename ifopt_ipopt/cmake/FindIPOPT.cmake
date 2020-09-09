@@ -41,7 +41,6 @@
 #  License text for the above reference.)
 
 if(NOT WIN32)
-
   # First priority is finding the package using IPOPT_DIR if set
   if(DEFINED ENV{IPOPT_DIR})
     set(IPOPT_DIR $ENV{IPOPT_DIR} CACHE PATH "Path to IPOPT build directory")
